@@ -50,4 +50,23 @@ The loss did decrease, but I still get shit at the end when trying to predict...
 - Tried to create a segmentation map using superpixels but color are so close to the background that it seems hard to get something ok automatically.
 - Build a simple segmentation map using the existing density map
 - Use it to train UNet: still very bas result, we just learn to predict something random on all images...
+04/05/2017:
+- Debug the Unet model, by trying to learn an identity (same input/output). This seems to work (that's both depressing and encouraging ...): loss decreases rather fast, validation loss is at the same level as training loss, and the final results are as expected.
+05/05/2017:
+- Someone reach rmse=12 on the leaderboard
+- Debug the regression of density map:
+-- without normalization and input noise, it doesn't work.
+-- with normalization (log, scale 0, 1 and 0-mean, 1-std normalization): loss is a bit high, and the prediction is not perfect, but it seems much better.
+-- with normalization, but no batchnorm: even better, val loss at 0.03, good looking results (still a bit noisy, but the overall shape is there).
+- with normalization, batchnorm only in the "down" path: val loss at 1.2, bad looking (but not completly random).
+- Tried again to learn the density map:
+-- normalized image, put in 0, 1 and then normalized 0-mean, 1-std
+-- log output + normalization
+-- no batch norm as suggested by above tests
+-- loss decreases slowly, reaching 0.78 (val) after 2 epochs (100 * 8 samples each). BUT, it seems we start to learn something! Will try with more samples.
+-- with 10 epochs, 200 steps each (batch_size = 8), the loss is not better (0.78), BUT the prediction shows that we actually learn pretty well to segment the exact shape of sealion. That's very encouraging, even if results are hardly exploitable for now.
+- To test: learn on patch with FC network, then apply on test and use a second network to predict the count.
+06/05/2017:
+-- Need to see how to exploit and improve previous results.
+
 
