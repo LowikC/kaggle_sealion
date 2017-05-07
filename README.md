@@ -68,5 +68,14 @@ The loss did decrease, but I still get shit at the end when trying to predict...
 - To test: learn on patch with FC network, then apply on test and use a second network to predict the count.
 06/05/2017:
 -- Need to see how to exploit and improve previous results.
-
+-- The count of the predicted density map is completly wrong, I need to take it into account while learning
+-- I implemented a model with 2 losses: mse on the density map + rmse on the predicted count. With the log normalization, it doesn't learn anything.
+-- Trying with SGD instead of Adam and ELU instead of ReLU
+-- Re-read some papers:
+--- http://www.ee.cuhk.edu.hk/~xgwang/papers/zhangLWYcvpr15.pdf: alternate between the 2 losses (and use appropriate weights, 10 for dmap, 1 for count)
+--- https://www.robots.ox.ac.uk/~vgg/publications/2015/Xie15/weidi15.pdf: scale the dmap by 100
+--- https://papers.nips.cc/paper/5539-depth-map-prediction-from-a-single-image-using-a-multi-scale-deep-network.pdf: depth map, predict log(y), and use a scale invariant loss.
+--- https://arxiv.org/pdf/1605.02305.pdf: use classification instead of regression (for depth map): uniformly quantize the output, in log space. It's a good, I will try this tomorrow.
+07/05/2017: Election day
+- With ELU and SGD, loss goes down to 0.41, and keep decreasing. Good news is that the count seems not to bad, but pups are hard to detect.
 
