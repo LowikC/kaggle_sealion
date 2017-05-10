@@ -91,4 +91,7 @@ The loss did decrease, but I still get shit at the end when trying to predict...
 09/05/2017
 - Manually alternate between loss: the loss on count doesn't seem to learn anything (loss doesn't decrease). I'd like to try to learn it on bigger patches (like 224x3).
 - Besides, new epochs with mse didn't improve the previous model.
-
+10/05/2017
+- Will try to learn a FCN on sealion patches. Then apply it on bigger image and learn a second model to predict the count.
+- Wrote notebook to train Xception on 91x91 patches. Patches are generated on the fly, with a probability distribution computed on the dataset for each type of sealion.
+- Size of the patches, the type of CNN, normalization of the image, ... are hyperparameters to be tested.
