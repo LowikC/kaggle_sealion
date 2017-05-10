@@ -15,6 +15,9 @@
 -- extract fixed size patch for training
 -- OR use superpixels and extract superpixels around dots
 
+
+- use superpixels to have the direction of the sealion and use it for the gaussian on the density map
+
 ## TODO
 
 - extract dots from training image
@@ -78,4 +81,14 @@ The loss did decrease, but I still get shit at the end when trying to predict...
 --- https://arxiv.org/pdf/1605.02305.pdf: use classification instead of regression (for depth map): uniformly quantize the output, in log space. It's a good, I will try this tomorrow.
 07/05/2017: Election day
 - With ELU and SGD, loss goes down to 0.41, and keep decreasing. Good news is that the count seems not to bad, but pups are hard to detect.
+07/05/2017
+- Created function to compute the prediction on a full image
+- Start learning with quantized target in log space, with nbins=128 (more takes a lot of memory)
+08/05/2017
+- First try with quantization failed: we predict only 0 (the classes are too much imbalanced). Loss decreases to 2.20 but stop decreasing after 2 epochs
+- Spend a lot of time to find a way to put weights on each class. But second try is still bad: put low weights on class #0 (background, 0.001), and predict only 1...
+- With a weight = 0.01, we predict different values, but still far from the target. I shoudl try to debug it with identity + noise.
+09/05/2017
+- Manually alternate between loss: the loss on count doesn't seem to learn anything (loss doesn't decrease). I'd like to try to learn it on bigger patches (like 224x3).
+- Besides, new epochs with mse didn't improve the previous model.
 
