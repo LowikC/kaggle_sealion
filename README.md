@@ -95,3 +95,15 @@ The loss did decrease, but I still get shit at the end when trying to predict...
 - Will try to learn a FCN on sealion patches. Then apply it on bigger image and learn a second model to predict the count.
 - Wrote notebook to train Xception on 91x91 patches. Patches are generated on the fly, with a probability distribution computed on the dataset for each type of sealion.
 - Size of the patches, the type of CNN, normalization of the image, ... are hyperparameters to be tested.
+11/05/2017
+- Converted Xception into a fully convolutional model, and train it on patches: I get the same accuracy as with the Dense layers (anf GlobalPooling).
+- Will read the "Tiramisu" paper. Code is available here:  https://gi    thub.com/titu1994/Fully-Connected-DenseNets-Semantic-Segmentation
+- Finetuning regression of density map for adult_males only doesn't work.
+- It seems that the superpixels can be used to find the orientation of sealion: I will check on more images.
+12/05/2017
+- Superpixels are not bad to find the orientations of sealion. I implemented the new density map.
+I will double check the dots (using those posted on Kaggle), annotate a few sealions with full mask to get some stats + validation set, and generate all density maps.
+13/05/2017
+14/05/2017
+- Spent time to get the rights dots. Compared with coordinates on Kaggle forum.
+- Also checked the missmatched images. Some of them seems perfectly ok, so I will keep them.

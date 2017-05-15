@@ -1,0 +1,17 @@
+947: error on brown point non detected - to be checked.
+816: many brown missing
+946: many false positives (brown)
+840: many missing brown
+
+
+To try:
+- use superpixels to have the direction of the sealion and use it for the gaussian on the density map
+
+https://blog.fineighbor.com/tensorflow-dealing-with-imbalanced-data-eb0108b10701
+
+
+You have a nice intuition that
+male adult sea lions keep their territories, and distances between male adult sea lions have some means.
+
+I have another intuition that
+pup sea lions are sitting around their mother, so distances between pups and adult females also have some means.

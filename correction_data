@@ -1,0 +1,141 @@
+from https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count/discussion/32857
+
+448 ~ 3 unmarked sea lions in the rocky islands on the middle
+513 ~ darker unmarked sea lions
+519 ~ 2 unmarked sea lions in the bottom right corner
+555 ~ many unmarked sea lions in the water
+571 ~ unmarked sea lion at the center of the island
+578 ~ unmarked sea lion towards in the bottom left quadrant
+629 ~ unmarked sea lion in the ocean
+655 ~ darker unmarked sea lions
+675 ~ unmarked sea lion top right quadrant
+679 ~ unmarked sea lion in the water near the coast
+686 ~ unmarked sea lion in the water near the coast
+724 ~ 3 unmarked sea lions in the water, 1 unmarked sea lion on tiny island
+732 ~ unmarked sea lion in the water in the bottom left quadrant
+759 ~ sea lion marked DEAD, meaning is not understood
+761 ~ possibly a few adult female sea lions marked as adult male
+764 ~ 4 unmarked sea lions
+776 ~ unmarked black sea lions
+790 ~ unmarked black sea lions
+802 ~ unmarked sea lion in bottom right quadrant
+806 ~ 2 unmarked sea lions that had just dove into the water
+822 ~ unmarked sea lion in the upper right quadrant, in the water
+823 ~ unmarked sea lion in the water
+837 ~ unmarked sea lions in bottom right quadrant, text in the top left quadrant ("Bulls: 1 SAMs:0 Females:0 Juveniles:0 Pups:0 Total:1")
+845 ~ possibly a few adult female sea lions marked as adult male
+847 ~ unmarked sea lion bottom right quadrant
+857 ~ no marked sea lions present
+858 ~ unmarked sea lion in bottom right quadrant ocean, unmarked sea lion to left of island in the ocean
+899 ~ unmarked sea lion top left quadrant
+900 ~ unmarked sea lion bottom left quadrant
+906 ~ unmarked sea lion in water off the coast
+924 ~ shiny unmarked sea lions (most likely not stellar sea lions)
+929 ~ unmarked sea lion in water (top right quadrant)
+939 ~ 2 unmarked sea lions in cluster of sea lions
+
+
+# Correction of dots
+
+80: use dotC with correction in type
+(1697, 414) : subadult_male (got the right number in train.csv)
+
+112: C is wrong (bad position):
+From A: 
+(1366, 1153)
+From C: 
+(1362, 1156)
+
+127: missing dot in C
+From A: 
+(3014, 3053)
+
+170: use dotC with correction
+(3234, 623) females instead of subadult_male
+
+174: use dotC with correction
+adult_male: (3710, 3500): false detection
+
+177: dotC with correction
+replace (5186, 2630) by (5185, 2616) (subadult_male)
+
+186:
+- 2 missing:
+(2335, 1273)
+(3177, 1408)
+- one miss located
+(3088, 1573)
+From C: 
+(3095, 1574)
+
+197: use dotA
+missing in C: (brown, female)
+(2959, 1042)
+missing in A:
+(2676, 2028) (brown female)
+
+240: use dotC
+remove (3178, 3676) pups (not visible)
+
+291: use A, but with corrections
+C: 3 wrong detections (first two to remove in A)
+adult_males: (1452, 49), (1482, 49), (1503, 49)
+
+338: need to correct mask (see bottom)
+
+416:                                                                                                                    
+missing in C: juveniles (1385, 543) (real point is not centered)
+
+418:
+4 missings in C:
+(1622, 1032)
+(1715, 1151)
+(1510, 1229)
+
+Missing in both A and C:
+1648, 1109
+
+420: miising in C
+(4733, 437) females
+
+452: use C w corr
+missing pups (4379, 2287)
+
+495: 
+double points on 
+remove female: (2823, 1661)
+
+566: missing in C
+subadult_male (1550, 3103)
+
+587: missing in C
+pups
+A: 1708, 122
+A: 1667, 150
+A: 1553, 174
+A: 1684, 210
+
+629: missing in C
+pups A: 4738, 2395
+
+699: missing in C
+adult_female A: 2046, 1885
+
+715: missing in C
+pups A: 3287, 552
+
+791: missing in C
+adult_female 2256, 585
+
+803: use A, but missing in C
+adult_male A: 846, 2120
+adult_female A: 1541, 3342
+
+missing in A:
+adult_female: 1356, 3349
+
+828: use C, missing
+adult_female: 2682, 2349
+
+
+
