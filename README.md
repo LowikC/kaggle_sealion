@@ -97,7 +97,7 @@ The loss did decrease, but I still get shit at the end when trying to predict...
 - Size of the patches, the type of CNN, normalization of the image, ... are hyperparameters to be tested.
 11/05/2017
 - Converted Xception into a fully convolutional model, and train it on patches: I get the same accuracy as with the Dense layers (anf GlobalPooling).
-- Will read the "Tiramisu" paper. Code is available here:  https://gi    thub.com/titu1994/Fully-Connected-DenseNets-Semantic-Segmentation
+- Will read the "Tiramisu" paper. Code is available here:  https://github.com/titu1994/Fully-Connected-DenseNets-Semantic-Segmentation
 - Finetuning regression of density map for adult_males only doesn't work.
 - It seems that the superpixels can be used to find the orientation of sealion: I will check on more images.
 12/05/2017
@@ -107,3 +107,49 @@ I will double check the dots (using those posted on Kaggle), annotate a few seal
 14/05/2017
 - Spent time to get the rights dots. Compared with coordinates on Kaggle forum.
 - Also checked the missmatched images. Some of them seems perfectly ok, so I will keep them.
+15/05/2017
+- Computed stats on sizes and area (also for superpixel) and launch ellipses detection for all training images.
+- Ideas:
+--  could we classify superpixels?
+-- could we use superpixel + ellipses mask to get an accurate segmentation.
+-- could we build a segmentation map using the ellipses gaussian?
+- Implemented the Tiramisu CNN, to be test
+- Computed ellipses on corrected dots
+- Computed dmap with ellipses
+- Write method to convert the density map to a segmentation map. It is worth trying to learn Unet on this.
+16/05/2017
+- Tried training on CPU with density map and segmentation map from ellipses.
+-- Try several class weights for segmentation
+-- We learn something, but it is not good enough
+17/05/2017
+- Training on GPU: mush faster (like x10)
+- Add a random flip
+- Add callbacks (LRonPlateau, Checkpoint and TensorBoard)
+- Try training on more epochs (20 epochs, 400 steps x 8, 100 steps for validation)
+- Regression training gives visually ok results, but not on pups. And I still don't know how to exploit them. I tried to add a GlobalAvgPooling + Dense to predict the counts, but it doesn't work (plugged on the smalles feature map).
+- Segmentation training gives weird results visually: many classes are mixed up with the background.
+18/05/2017:
+- Let's rethink about the problem, I tried to progress by small steps:
+-- I will implement the pipeline to create a dummy submission and evaluate it on validation data
+-- The fist submission can be all 0 (I already know that the public LB gives 29 for this).
+-- The second can be just the mean of each classes.
+- Then, I will retry to work on a simpler CNN model: finetune inception or resnet, convert to fully convolutionnal (or not), create a heatmap, and use it to predict counts.
+- I have all data on AWS, so it should be quite fast to train some models.
+
+-- The fist submission can be all 0 (I already know that the public LB gives 29 for this).
+-- The second can be just the mean of each classes.
+- Then, I will retry to work on a simpler CNN model: finetune inception or resnet, convert to fully convolutionnal (or not), create a heatmap, and use it to predict counts.
+- I have all data on AWS, so it should be quite fast to train some models.
+
+-- The fist submission can be all 0 (I already know that the public LB gives 29 for this).
+-- The second can be just the mean of each classes.
+- Then, I will retry to work on a simpler CNN model: finetune inception or resnet, convert to fully convolutionnal (or not), create a heatmap, and use it to predict counts.
+- I have all data on AWS, so it should be quite fast to train some models.
+
+-- The fist submission can be all 0 (I already know that the public LB gives 29 for this).
+-- The second can be just the mean of each classes.
+- Then, I will retry to work on a simpler CNN model: finetune inception or resnet, convert to fully convolutionnal (or not), create a heatmap, and use it to predict counts.
+- I have all data on AWS, so it should be quite fast to train some models.
+- Tested submissions:
+-- mean get 27 on LB vs 33 on local CV
+-- The absolute value seems wrong on local CV, but the relative value is ok:I got 38 for all-0 (29 on LB), which is higher than 33 for mean prediction (vs 27 on LB).
