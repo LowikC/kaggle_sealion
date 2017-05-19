@@ -153,3 +153,9 @@ I will double check the dots (using those posted on Kaggle), annotate a few seal
 - Tested submissions:
 -- mean get 27 on LB vs 33 on local CV
 -- The absolute value seems wrong on local CV, but the relative value is ok:I got 38 for all-0 (29 on LB), which is higher than 33 for mean prediction (vs 27 on LB).
+-- By using a different random split, that guaranty a similar mean, I got something closer to the public LB result (24.7 (vs 27.5) and 30.23 (vs 29)
+- For small patches for pups, disk I/O is the bottleneck. I need a better way to load and create random patches...
+-- I decided to samples several patches from each block loaded in memory. It speed up a lot the learning.
+-- Finetuning the last layer, loss decrease from 1.5 to 0.3
+- At last! It seems I got some interesting results on pups (to be validated thoroughly): resNet50, finetune for pups vs all (fullt convolutional), then add 2 conv layer to predict counts on large patch (384 x 384).
+-- After a few tests, it seems not bad at all! I'm really happy. Next steps: Same for all sealion type. I think I should automate this a bit, but I will try first with subadult_males to see how it goes (this is the most difficult one I think, easily confused with adult_females and adult_males.
