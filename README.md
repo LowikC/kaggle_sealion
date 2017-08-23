@@ -136,22 +136,6 @@ I will double check the dots (using those posted on Kaggle), annotate a few seal
 - Then, I will retry to work on a simpler CNN model: finetune inception or resnet, convert to fully convolutionnal (or not), create a heatmap, and use it to predict counts.
 - I have all data on AWS, so it should be quite fast to train some models.
 
--- The fist submission can be all 0 (I already know that the public LB gives 29 for this).
--- The second can be just the mean of each classes.
-- Then, I will retry to work on a simpler CNN model: finetune inception or resnet, convert to fully convolutionnal (or not), create a heatmap, and use it to predict counts.
-- I have all data on AWS, so it should be quite fast to train some models.
-
--- The fist submission can be all 0 (I already know that the public LB gives 29 for this).
--- The second can be just the mean of each classes.
-- Then, I will retry to work on a simpler CNN model: finetune inception or resnet, convert to fully convolutionnal (or not), create a heatmap, and use it to predict counts.
-- I have all data on AWS, so it should be quite fast to train some models.
-
--- The fist submission can be all 0 (I already know that the public LB gives 29 for this).
--- The second can be just the mean of each classes.
-- Then, I will retry to work on a simpler CNN model: finetune inception or resnet, convert to fully convolutionnal (or not), create a heatmap, and use it to predict counts.
-- I have all data on AWS, so it should be quite fast to train some models.
-- Tested submissions:
--- mean get 27 on LB vs 33 on local CV
 -- The absolute value seems wrong on local CV, but the relative value is ok:I got 38 for all-0 (29 on LB), which is higher than 33 for mean prediction (vs 27 on LB).
 -- By using a different random split, that guaranty a similar mean, I got something closer to the public LB result (24.7 (vs 27.5) and 30.23 (vs 29)
 - For small patches for pups, disk I/O is the bottleneck. I need a better way to load and create random patches...
@@ -159,3 +143,32 @@ I will double check the dots (using those posted on Kaggle), annotate a few seal
 -- Finetuning the last layer, loss decrease from 1.5 to 0.3
 - At last! It seems I got some interesting results on pups (to be validated thoroughly): resNet50, finetune for pups vs all (fullt convolutional), then add 2 conv layer to predict counts on large patch (384 x 384).
 -- After a few tests, it seems not bad at all! I'm really happy. Next steps: Same for all sealion type. I think I should automate this a bit, but I will try first with subadult_males to see how it goes (this is the most difficult one I think, easily confused with adult_females and adult_males.
+19/05/2017
+- I can't get better than 80% accuracy for subadult or juveniles (not tried yet for females and adult_males).
+- The loss is very high, compared to pups (3.5 vs 0.3). That's seems weird.
+- Interesting point: the final rmse when predicting the mean is bad because of adult_females, juveniles and pups, that high max and high variance. So I could still predict the mean for adult_males and subadult_males, and just improve the 3 others.
+- For juveniles, the counts are not that bad, but I have to correct the prediction by substracting on offset, and take the floor of the predicted count.
+- For adult_females, counts are also ok
+- Next step: build the automated pipelines for all types, and validate. I should build new train/val/test set, to get a good mean.
+- Tried to learn to predict counts for all classes except pups: we learn something, but the count prediction is not good, probably because counts for adult and subadult males are too low. I could try to normaluze this to have roughly the same mean between all type of sealions
+- Implemented normalization of counts, to be tested tomorrow
+20/05/2017
+- Tried to learn the to predict counts for all types but pups, with normalized means, but results are bads. I could give it another try, but I will first try to validate results type by type.
+
+21/05/2017
+- Run the prediction over all validation set for pups: my rmse decreases significantly, but is not that good (24).
+- Ran over all the test set: it took 30hours (!!)
+- Submit with mean count for all types except pups, where I used the predicted scores: get a rmse on public LB of 29... that worse that the mean benchmark and very disapointing.
+- Big counts have a huge impact on the rmse, so I try to just divide all counts by a constant to get the same mean as the training set: rmse decrease to 26 on public LB. That is something I need to take care of.
+
+30/05/2017
+- Back after 1 week break.
+- A post on Kaggle mentions that semantic segmentation works fine. Both 2nd and 3rd on public LB use it (predict square around sealion)
+
+02/05/2017
+- Tested several new things:
+-- learn classification then counts for all types of sealion: the counts loss is still very bad and doesn't move much.
+-- tried a simpler network: I get the same accuracy as by finetuning ResNet ! But the prediction of the heatmap on a test image seems much worse.
+- Someone one Kaggle tried to do a regression of the counts on the full image resized to 512x512 with a very simple CNN and get 24 on public leaderboard! I could try it to improve my score
+- Someone posted a very interesting link to new research from Lempitsky, on counting pinguins. The setting is very similar to the Kaggle challenge, and I will try some ideas from the paper, like learning segmentation map with ignored regions around sealions, and then use this prediction to refine the regression density target.
+
